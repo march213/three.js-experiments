@@ -26,7 +26,7 @@ function addPoint(x, y, z) {
 
 // addPoint(0, 0, 0);
 
-const numberOfPoints = 50;
+const numberOfPoints = 300;
 const objects = [];
 
 for (let i = 0; i < numberOfPoints; i++) {
@@ -42,6 +42,11 @@ for (let i = 0; i < numberOfPoints; i++) {
     mesh,
     theta,
     random: Math.random(),
+
+    // offsetting points
+    x: Math.random() / 5,
+    y: Math.random() / 5,
+    z: Math.random() / 5,
   });
 }
 
@@ -61,13 +66,13 @@ scene.add(gridHelper);
 
 function animate(time) {
   objects.forEach((obj, i) => {
-    let { mesh, theta, random } = obj;
+    let { mesh, theta, random, x, y, z } = obj;
 
-    let x = Math.cos(theta - time / 10000);
-    let y = Math.sin(theta - time / 10000);
-    let z = 0;
+    let newX = Math.cos(theta - time / 5000) + x;
+    let newY = Math.sin(theta - time / 5000) + y;
+    let newZ = z;
 
-    mesh.position.set(x, y, z);
+    mesh.position.set(newX, newY, newZ);
   });
 
   mesh.rotation.x = time / 2000;
