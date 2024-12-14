@@ -24,13 +24,25 @@ function addPoint(x, y, z) {
   return point;
 }
 
-addPoint(0, 0, 0);
+// addPoint(0, 0, 0);
 
-for (let i = 0; i < 10; i++) {
-  let theta = (i / 10) * Math.PI * 2;
+const numberOfPoints = 50;
+const objects = [];
+
+for (let i = 0; i < numberOfPoints; i++) {
+  // theta could be called an angle or rotationAngle
+  let theta = (i / numberOfPoints) * Math.PI * 2;
   let x = Math.cos(theta);
   let y = Math.sin(theta);
-  addPoint(x, y, 0);
+  let z = 0;
+
+  let mesh = addPoint(x, y, z);
+
+  objects.push({
+    mesh,
+    theta,
+    random: Math.random(),
+  });
 }
 
 const renderer = new THREE.WebGLRenderer({ antialias: true });
@@ -48,6 +60,16 @@ const gridHelper = new THREE.GridHelper(size, divisions);
 scene.add(gridHelper);
 
 function animate(time) {
+  objects.forEach((obj, i) => {
+    let { mesh, theta, random } = obj;
+
+    let x = Math.cos(theta - time / 10000);
+    let y = Math.sin(theta - time / 10000);
+    let z = 0;
+
+    mesh.position.set(x, y, z);
+  });
+
   mesh.rotation.x = time / 2000;
   mesh.rotation.y = time / 1000;
 
